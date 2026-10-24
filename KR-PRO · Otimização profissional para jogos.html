@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KR-PRO · Otimização profissional para jogos</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#10131c;--card:#181c28;--line:#2a3042;--tx:#e6e9f2;--mut:#98a0b8;--ac:#ff7a45;--ac2:#4cc9f0;--ok:#5ee2a0;--warn:#ffc857;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f3f5fa;--card:#fff;--line:#d9deea;--tx:#1b2030;--mut:#566079;--ac:#d9531e;--ac2:#0a7ea4;--ok:#0f8a56;--warn:#a06b00}}
+:root[data-theme="light"]{--bg:#f3f5fa;--card:#fff;--line:#d9deea;--tx:#1b2030;--mut:#566079;--ac:#d9531e;--ac2:#0a7ea4;--ok:#0f8a56;--warn:#a06b00}
+:root[data-theme="dark"]{--bg:#10131c;--card:#181c28;--line:#2a3042;--tx:#e6e9f2;--mut:#98a0b8;--ac:#ff7a45;--ac2:#4cc9f0;--ok:#5ee2a0;--warn:#ffc857}
+html{scroll-padding-top:70px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.65 Inter,system-ui,sans-serif}
+h1,h2,h3{font-family:"Chakra Petch",Inter,sans-serif;line-height:1.15;margin:0}
+header{padding:48px 20px 28px;max-width:860px;margin:0 auto}
+h1{font-size:clamp(2rem,6vw,3.4rem);letter-spacing:-.01em}
+header p{color:var(--mut);max-width:60ch;margin:14px 0 18px}
+.prog{height:8px;background:var(--line);border-radius:8px;overflow:hidden;max-width:420px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .3s}
+.pl{font-size:.85rem;color:var(--mut);margin-top:6px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+nav div{max-width:860px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;padding:10px 20px}
+nav a{white-space:nowrap;color:var(--mut);text-decoration:none;font-size:.92rem;padding:6px 12px;border:1px solid var(--line);border-radius:20px}
+nav a:hover,nav a:focus-visible{color:var(--tx);border-color:var(--ac2);outline:none}
+main{max-width:860px;margin:0 auto;padding:10px 20px 80px}
+section{margin-top:44px}
+h2{font-size:1.7rem;margin-bottom:6px}
+.sub{color:var(--mut);margin:0 0 18px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.step label{display:flex;gap:12px;align-items:flex-start;cursor:pointer}
+.step input{margin-top:6px;width:18px;height:18px;accent-color:var(--ac);flex:none}
+.step h3{font-size:1.08rem}
+.step input:checked~div h3{color:var(--ok)}
+.step p,.step ul{margin:6px 0 0;color:var(--mut)}
+.step ul{padding-left:18px}
+.step b{color:var(--tx);font-weight:500}
+code{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:.88em;color:var(--ac2);word-break:break-word}
+.cmd{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-top:8px;overflow-x:auto}
+.cmd code{border:0;padding:0;flex:1;white-space:nowrap;word-break:normal}
+.cmd button{flex:none;background:var(--ac);color:#111;border:0;border-radius:6px;padding:4px 10px;font-weight:600;cursor:pointer}
+.tip,.warn{border-left:3px solid var(--ac2);padding:8px 12px;margin-top:10px;color:var(--mut);font-size:.93rem;background:var(--bg);border-radius:0 8px 8px 0}
+.warn{border-color:var(--warn)}
+.warn strong{color:var(--warn)}
+.gpu{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.gpu{grid-template-columns:1fr}}
+.gpu .step{margin:0}
+.gpu h3{margin-bottom:8px}
+.nv h3{color:#76b900}.amd h3{color:#ed1c24}
+footer{max-width:860px;margin:0 auto;padding:0 20px 40px;color:var(--mut);font-size:.85rem}
+:root{--bg:#0b0f17;--card:#121826;--line:#232c3f;--ac:#3b82f6;--ac2:#22d3ee}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--ac:#1d4ed8;--ac2:#0e7490}}
+:root[data-theme="light"]{--ac:#1d4ed8;--ac2:#0e7490}
+:root[data-theme="dark"]{--bg:#0b0f17;--card:#121826;--line:#232c3f;--ac:#3b82f6;--ac2:#22d3ee}
+h1,h2,h3{font-family:Inter,system-ui,sans-serif;font-weight:700;letter-spacing:-.01em}
+h2{padding-left:12px;border-left:4px solid var(--ac)}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{display:grid;place-items:center;width:58px;height:58px;border-radius:14px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;font-weight:800;font-size:1.35rem}
+.tag{color:var(--mut);font-size:.95rem}
+h1{font-size:clamp(2rem,6vw,3rem)}
+.by{margin-top:14px;display:inline-block;font-size:.85rem;color:var(--mut);border:1px solid var(--line);border-radius:20px;padding:3px 12px}
+.by b,footer b{color:var(--tx)}
+.step{border-radius:10px}
+.cmd button{color:#fff}
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.tools .step{margin:0}
+:root{--bg:#07070c;--card:#0e0f17;--line:#272a3b;--tx:#eef0fa;--mut:#9aa0ba;--ac:#ff2e4d;--ac2:#00e5ff;--ok:#39ff88;--warn:#ffc933}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eceef5;--card:#fff;--line:#cfd3e2;--tx:#14162a;--mut:#555b78;--ac:#e0183b;--ac2:#007c99;--ok:#0a8a4a;--warn:#946200}}
+:root[data-theme="light"]{--bg:#eceef5;--card:#fff;--line:#cfd3e2;--tx:#14162a;--mut:#555b78;--ac:#e0183b;--ac2:#007c99;--ok:#0a8a4a;--warn:#946200}
+:root[data-theme="dark"]{--bg:#07070c;--card:#0e0f17;--line:#272a3b;--tx:#eef0fa;--mut:#9aa0ba;--ac:#ff2e4d;--ac2:#00e5ff;--ok:#39ff88;--warn:#ffc933}
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(640px 320px at 12% -5%,color-mix(in srgb,var(--ac) 30%,transparent),transparent),radial-gradient(520px 320px at 92% 0,color-mix(in srgb,var(--ac2) 20%,transparent),transparent),linear-gradient(color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px) 0 0/48px 48px,linear-gradient(90deg,color-mix(in srgb,var(--line) 55%,transparent) 1px,transparent 1px) 0 0/48px 48px}
+h1,h2,h3{font-family:'Chakra Petch',Inter,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+h1{font-size:clamp(2.8rem,10vw,5rem);line-height:1;text-shadow:0 0 30px color-mix(in srgb,var(--ac) 65%,transparent)}
+h2{border:0;padding:0;font-size:1.5rem;display:flex;align-items:center;gap:14px}
+h2::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--ac),transparent)}
+.logo{width:70px;height:70px;border-radius:0;clip-path:polygon(25% 0,100% 0,100% 75%,75% 100%,0 100%,0 25%);background:linear-gradient(135deg,var(--ac),var(--ac2));font:700 1.7rem 'Chakra Petch',sans-serif}
+.tag{font:500 .8rem 'Chakra Petch',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:var(--ac2)}
+.by{border-radius:2px;border-color:var(--ac);text-transform:uppercase;letter-spacing:.1em;font-size:.75rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0}
+.chips span{font:700 .7rem 'Chakra Petch',sans-serif;letter-spacing:.14em;padding:4px 10px;border:1px solid var(--ac);color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.prog{height:12px;max-width:520px;border-radius:2px}
+.prog i{border-radius:0;-webkit-mask:repeating-linear-gradient(90deg,#000 0 8px,transparent 8px 10px);mask:repeating-linear-gradient(90deg,#000 0 8px,transparent 8px 10px)}
+.rank{margin-top:10px;font:600 .8rem 'Chakra Petch',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.rank b{color:var(--ac2);text-shadow:0 0 12px color-mix(in srgb,var(--ac2) 70%,transparent)}
+nav{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px)}
+nav a{border-radius:2px;text-transform:uppercase;letter-spacing:.08em;font:600 .75rem 'Chakra Petch',sans-serif}
+nav a:hover,nav a:focus-visible{color:var(--ac2);box-shadow:0 0 14px color-mix(in srgb,var(--ac2) 35%,transparent)}
+.step{border-radius:3px;border-left:3px solid var(--ac);background:linear-gradient(135deg,var(--card),color-mix(in srgb,var(--card) 90%,var(--ac)));transition:transform .2s,border-color .2s,box-shadow .2s}
+.step:hover{transform:translateX(3px);border-color:var(--ac2)}
+.step:has(input:checked){border-left-color:var(--ok);box-shadow:0 0 18px color-mix(in srgb,var(--ok) 20%,transparent)}
+.step h3{font-size:1rem}
+.step input{accent-color:var(--ok)}
+.cmd{border-radius:2px;border-left:3px solid var(--ac2)}
+.cmd button{background:var(--ac);border-radius:2px;font:700 .72rem 'Chakra Petch',sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.warn{border-radius:0;background:color-mix(in srgb,var(--warn) 8%,var(--bg))}
+footer{text-align:center}
+:root{--bg:#0a0b10;--card:#12141d;--line:#222637;--tx:#f1f3fb;--mut:#9aa1b9;--ac:#8b5cf6;--ac2:#38bdf8;--ok:#34d399;--warn:#fbbf24}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f5f6fb;--card:#fff;--line:#e2e5f0;--tx:#151826;--mut:#5b6280;--ac:#6d3df0;--ac2:#0284c7;--ok:#059669;--warn:#b45309}}
+:root[data-theme="light"]{--bg:#f5f6fb;--card:#fff;--line:#e2e5f0;--tx:#151826;--mut:#5b6280;--ac:#6d3df0;--ac2:#0284c7;--ok:#059669;--warn:#b45309}
+:root[data-theme="dark"]{--bg:#0a0b10;--card:#12141d;--line:#222637;--tx:#f1f3fb;--mut:#9aa1b9;--ac:#8b5cf6;--ac2:#38bdf8;--ok:#34d399;--warn:#fbbf24}
+body::before{background:radial-gradient(760px 380px at 50% -140px,color-mix(in srgb,var(--ac) 30%,transparent),transparent)}
+h1,h2,h3{font-family:Inter,system-ui,sans-serif;text-transform:none;letter-spacing:-.02em;font-weight:700}
+h1{font-size:clamp(2.4rem,8vw,3.8rem);text-shadow:none;background:linear-gradient(90deg,var(--tx),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:1.5rem;display:block}
+h2::after{display:none}
+.logo{clip-path:none;border-radius:16px;width:60px;height:60px;font:800 1.4rem Inter,sans-serif}
+.tag{font:500 .95rem Inter,sans-serif;letter-spacing:0;text-transform:none;color:var(--mut)}
+.by{border-radius:99px;text-transform:none;letter-spacing:0;font-size:.82rem;border-color:var(--line)}
+.chips span{border-radius:99px;font:500 .75rem Inter,sans-serif;letter-spacing:0;border-color:var(--line);color:var(--mut);background:var(--card)}
+.prog{border-radius:99px;height:10px}
+.prog i{-webkit-mask:none;mask:none;border-radius:99px}
+.rank{font:500 .85rem Inter,sans-serif;letter-spacing:0;text-transform:none}
+section{margin-top:26px}
+.js main section{display:none}
+.js main section.on{display:block;animation:tin .25s ease}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}}
+nav div{gap:8px}
+.tab{flex:none;display:flex;gap:8px;align-items:center;font:500 .88rem Inter,sans-serif;color:var(--mut);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--tx);border-color:var(--ac)}
+.tab small{font-size:.72rem;background:var(--bg);padding:1px 8px;border-radius:99px}
+.tab[aria-selected=true]{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-color:transparent}
+.tab[aria-selected=true] small{background:rgba(255,255,255,.24);color:#fff}
+.step{border-radius:16px;border:1px solid var(--line);background:var(--card);padding:18px 20px}
+.step:hover{transform:none;border-color:color-mix(in srgb,var(--ac) 55%,var(--line))}
+.step:has(input:checked){border-color:var(--ok);box-shadow:none;background:color-mix(in srgb,var(--ok) 6%,var(--card))}
+.step h3{font-size:1.02rem}
+.step input{appearance:none;-webkit-appearance:none;width:22px;height:22px;margin-top:2px;border:2px solid var(--line);border-radius:7px;display:grid;place-content:center;cursor:pointer}
+.step input:checked{background:var(--ok);border-color:var(--ok)}
+.step input:checked::after{content:'✓';color:#06281a;font-size:14px;font-weight:800}
+.cmd{border-radius:10px;border-left:1px solid var(--line)}
+.cmd button{border-radius:8px;font:600 .75rem Inter,sans-serif;text-transform:none;letter-spacing:0}
+.warn,.tip{border-radius:12px}
+.warn{background:color-mix(in srgb,var(--warn) 8%,var(--card))}
+.bgart{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.14}
+@media(min-width:900px){
+body{padding-right:270px}
+nav{position:fixed;top:0;right:0;bottom:0;width:270px;border-bottom:0;border-left:1px solid var(--line);overflow-y:auto;padding:calc(22px + env(safe-area-inset-top,0px)) 0 22px}
+nav div{flex-direction:column;overflow:visible;max-width:none;margin:0;padding:0 16px;gap:8px}
+nav div::before{content:'Categorias';font:600 .72rem Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);padding:0 4px 6px}
+.tab{width:100%;justify-content:space-between;border-radius:12px;padding:11px 14px;white-space:normal;text-align:left}
+}
+:root:not([x]),:root[data-theme]{--bg:#050505;--card:#110f0d;--line:#2c2219;--tx:#f6efe6;--mut:#ab9b8a;--ac:#ff7a1a;--ac2:#ffb347;--ok:#ffc247;--warn:#ffc247}
+.step input:checked::after{color:#1a0d00}
+@media(min-width:900px){body{padding-right:0;padding-left:280px}nav{right:auto;left:0;width:280px;border-left:0;border-right:1px solid var(--line)}}
+.tab{gap:10px;padding:8px 12px 8px 8px;border-radius:14px}
+.tab .lb{flex:1;text-align:left}
+.tab .ic{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;flex:none;color:var(--tc);background:color-mix(in srgb,var(--tc) 16%,transparent)}
+.tab:hover{border-color:var(--tc);color:var(--tx)}
+.tab[aria-selected=true]{background:linear-gradient(135deg,var(--tc),color-mix(in srgb,var(--tc) 55%,#ff3d00));color:#150800;font-weight:700;border-color:transparent;box-shadow:0 6px 22px color-mix(in srgb,var(--tc) 35%,transparent)}
+.tab[aria-selected=true] .ic{background:rgba(0,0,0,.22);color:#150800}
+.tab[aria-selected=true] small{background:rgba(0,0,0,.25);color:#150800}
+.bgart{transition:opacity .35s}
+.bgart.sw{opacity:0}
+.bgart{display:none}
+section{counter-reset:n}
+.step label h3::before{counter-increment:n;content:counter(n,decimal-leading-zero);font:600 .72rem 'Chakra Petch',sans-serif;letter-spacing:.1em;color:var(--ac);margin-right:10px}
+h2{padding-bottom:12px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.step{padding:18px 22px;box-shadow:0 1px 0 rgba(255,255,255,.03) inset}
+.chips span{background:transparent;font-weight:600;letter-spacing:.04em}
+.bd{display:inline-block;font:600 .68rem Inter,sans-serif;letter-spacing:.03em;padding:2px 9px;border-radius:99px;margin:0 6px 6px 0;border:1px solid currentColor}
+.bd.hi{color:#34d399}.bd.md{color:#ffc247}.bd.lo{color:var(--mut)}.bd.rk{color:#ff6b57}
+.legend{display:flex;flex-wrap:wrap;gap:6px;align-items:center;color:var(--mut);font-size:.85rem;margin:0 0 14px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body><svg class='bgart' aria-hidden='true' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='gp' width='400' height='400' patternUnits='userSpaceOnUse'><g fill='none' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'>
+<g transform='translate(30 40) rotate(-12) scale(1.9)' style='stroke:var(--ac)'><rect x='2' y='7' width='20' height='11' rx='5'/><path d='M7 10v5M4.5 12.5h5'/><circle cx='16' cy='11' r='1'/><circle cx='18.5' cy='14' r='1'/></g>
+<g transform='translate(210 30) scale(1.6)' style='stroke:var(--ac2)'><circle cx='12' cy='12' r='8'/><path d='M12 1v6M12 17v6M1 12h6M17 12h6'/></g>
+<g transform='translate(320 110) rotate(10) scale(1.8)' style='stroke:var(--tx)'><path d='M5 19L19 5M15 5h4v4M7 14l3 3M4 20l2-2'/></g>
+<g transform='translate(120 130) rotate(8) scale(1.7)' style='stroke:var(--ac2)'><path d='M7 4h10v5a5 5 0 01-10 0zM7 6H3v2a3 3 0 004 3M17 6h4v2a3 3 0 01-4 3M12 14v4M8 21h8'/></g>
+<g transform='translate(250 190) rotate(-15) scale(1.7)' style='stroke:var(--ac)'><rect x='3' y='3' width='18' height='18' rx='4'/><circle cx='8' cy='8' r='1'/><circle cx='16' cy='16' r='1'/><circle cx='12' cy='12' r='1'/><circle cx='16' cy='8' r='1'/><circle cx='8' cy='16' r='1'/></g>
+<g transform='translate(20 230) rotate(6) scale(1.8)' style='stroke:var(--ac2)'><path d='M4 14v-2a8 8 0 0116 0v2'/><rect x='3' y='14' width='4' height='6' rx='2'/><rect x='17' y='14' width='4' height='6' rx='2'/></g>
+<g transform='translate(150 270) scale(1.6)' style='stroke:var(--tx)'><path d='M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'/></g>
+<g transform='translate(320 290) rotate(-8) scale(1.8)' style='stroke:var(--ac)'><circle cx='12' cy='12' r='9'/><circle cx='12' cy='12' r='2'/><path d='M3 12h7M14 12h7M12 14v7'/></g>
+<g transform='translate(60 335) scale(1.5)' style='stroke:var(--tx)'><path d='M13 2L4 14h7l-1 8 9-12h-7z'/></g>
+<g transform='translate(225 325) rotate(10) scale(1.6)' style='stroke:var(--ac2)'><circle cx='12' cy='6' r='3'/><path d='M12 9v6M5 21v-3a2 2 0 012-2h10a2 2 0 012 2v3z'/></g>
+<g transform='translate(340 15) scale(1.4)' style='stroke:var(--ac)'><circle cx='12' cy='12' r='9'/><path d='M12 8l4 3-1.5 5h-5L8 11z'/></g>
+</g></pattern></defs><rect width='100%' height='100%' fill='url(#gp)'/></svg>
+<header>
+<div class='brand'><span class='logo'>KR</span><div><h1>KR-PRO</h1><div class='tag'>Guia profissional de otimização de PC para jogos</div></div></div><div class='by'>Criado por <b>KRCADU</b></div><div class='chips'><span id='st1'>0 otimizações</span><span>16 categorias</span><span>Passo a passo</span><span>Grátis</span></div>
+<p>Passo a passo para deixar o Windows mais rápido, usar a energia no máximo, configurar os drivers da NVIDIA e da AMD, melhorar as cores e aumentar os Hz do monitor. Marque cada etapa que você concluir.</p>
+<div class="prog"><i id="bar"></i></div>
+<div class="pl" id="pl">0 de 0 etapas concluídas</div><div class='rank'>Nível: <b id='rk'>Iniciante</b></div>
+</header>
+<nav><div>
+<a href="#windows">Windows</a><a href="#energia">Energia</a><a href="#drivers">Drivers</a><a href="#cores">Cores</a><a href="#hz">Hz e overclock</a><a href="#hardware">CPU, RAM e BIOS</a><a href="#jogos">Dentro dos jogos</a><a href="#avancado">Avançado</a><a href="#rede">Rede</a><a href="#manut">Manutenção</a><a href="#gpu2">GPU avançado</a><a href="#perif">Periféricos</a><a href="#win2">Windows extra</a><a href="#ocpu">OC CPU/RAM</a><a href="#perfis">Perfis</a><a href="#probl">Problemas</a><a href="#tools">Ferramentas</a><a href="#erros">Erros comuns</a><a href="#w11">Windows 11</a><a href="#note">Notebook</a><a href="#stream">Streaming</a>
+</div></nav>
+<main><div class='warn'><strong>Antes de começar:</strong> crie um ponto de restauração (pesquise «Criar um ponto de restauração» no menu Iniciar e clique em Criar) para poder voltar atrás se algo der errado.</div>
+
+<section id="windows">
+<h2>1. Deixar o Windows mais rápido</h2>
+<p class="sub">Menos programas rodando em segundo plano significa mais CPU, RAM e disco livres para o jogo.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ativar o Modo de Jogo</h3>
+<p>Abra <b>Configurações → Jogos → Modo de Jogo</b> e ligue. O Windows passa a priorizar o jogo e evita atualizações no meio da partida.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Tirar programas da inicialização</h3>
+<p>Aperte <code>Ctrl + Shift + Esc</code>, vá em <b>Aplicativos de inicialização</b> e desative Spotify, Discord, Teams, launchers e tudo que você não precisa assim que liga o PC.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Bloquear apps em segundo plano</h3>
+<p>Em <b>Configurações → Aplicativos → Aplicativos instalados</b>, abra as opções avançadas dos apps que você não usa e coloque as permissões de segundo plano em <b>Nunca</b>.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ajustar efeitos visuais</h3>
+<p>Aperte <code>Win + R</code>, digite o comando abaixo, vá em <b>Avançado → Desempenho → Configurações</b> e escolha <b>Ajustar para obter o melhor desempenho</b>. Se quiser manter as fontes suaves, marque de volta só “Suavizar bordas das fontes de tela”.</p>
+<div class="cmd"><code>sysdm.cpl</code><button>Copiar</button></div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Limpar arquivos temporários</h3>
+<p>Aperte <code>Win + R</code>, digite <code>%temp%</code> e depois <code>temp</code>. Selecione tudo e apague (pule o que estiver em uso). Depois esvazie a lixeira e use <b>Configurações → Sistema → Armazenamento</b> para limpar o resto.</p>
+<div class="tip">Mantenha pelo menos 15% do SSD livre. Disco muito cheio fica mais lento.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desativar capturas da Xbox Game Bar</h3>
+<p>Em <b>Configurações → Jogos → Capturas</b>, desligue a gravação em segundo plano. Isso economiza GPU e disco, a menos que você use esse recurso.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Testar o Agendamento de GPU acelerado por hardware</h3>
+<p>Em <b>Configurações → Sistema → Vídeo → Elementos gráficos → Alterar configurações gráficas padrão</b>, ligue. Em placas recentes costuma ajudar; se notar travadas, desligue e compare.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Manter Windows e drivers atualizados</h3>
+<p>Instale as atualizações, mas configure as <b>horas ativas</b> para o PC não reiniciar enquanto você joga. Se tiver HD comum, considere migrar o Windows e os jogos para um SSD, que é o maior ganho de velocidade.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desligar a aceleração do mouse</h3>
+<p>Aperte <code>Win + R</code>, digite <code>main.cpl</code>, vá em <b>Opções do ponteiro</b> e desmarque <b>Aprimorar a precisão do ponteiro</b>. A mira fica mais consistente.</p></div></label></div>
+
+<div class="warn"><strong>Cuidado:</strong> evite programas “otimizadores” milagrosos e não desative o antivírus do Windows (Defender). Os passos acima já dão o ganho real sem riscos.</div>
+</section>
+
+<section id="energia">
+<h2>2. Energia no máximo</h2>
+<p class="sub">O padrão do Windows economiza energia e pode limitar CPU e GPU.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Modo de energia: Melhor desempenho</h3>
+<p>Vá em <b>Configurações → Sistema → Energia e bateria → Modo de energia</b> e escolha <b>Melhor desempenho</b>.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ativar o plano “Desempenho Máximo”</h3>
+<p>Abra o <b>Terminal como administrador</b> (clique direito no menu Iniciar) e rode o comando abaixo. Depois abra <code>powercfg.cpl</code> e selecione o plano novo.</p>
+<div class="cmd"><code>powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61</code><button>Copiar</button></div>
+<div class="cmd"><code>powercfg.cpl</code><button>Copiar</button></div>
+<div class="tip">Se o plano não aparecer, é porque seu PC é notebook com “Modern Standby”. Use <b>Alto desempenho</b> ou o modo Melhor desempenho do passo anterior.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Notebook: sempre na tomada</h3>
+<p>Na bateria o desempenho cai bastante. Use o modo <b>Turbo/Performance</b> do software do fabricante (Armoury Crate, Legion, Nitro Sense etc.) e apoie o notebook em superfície que deixe o ar circular.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desativar a suspensão do USB e do disco</h3>
+<p>Em <b>Alterar configurações do plano → Alterar configurações de energia avançadas</b>, desative “Suspensão seletiva USB” e coloque “Desligar o disco rígido após” em 0 (nunca).</p></div></label></div>
+
+<div class="warn"><strong>Atenção:</strong> energia máxima gera mais calor. Confira as temperaturas com HWMonitor ou MSI Afterburner. Acima de 85 °C na CPU ou 83 °C na GPU de forma constante, limpe o PC e melhore a ventilação.</div>
+</section>
+
+<section id="drivers">
+<h2>3. Drivers da NVIDIA e da AMD</h2>
+<p class="sub">Driver novo e bem configurado dá mais FPS e menos travadas. Baixe sempre do site oficial.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Instalação limpa do driver</h3>
+<ul><li>Baixe o driver em <b>nvidia.com/drivers</b> ou <b>amd.com/support</b>.</li>
+<li>Se estiver com problemas, use o <b>DDU (Display Driver Uninstaller)</b> em Modo Seguro para remover o driver antigo.</li>
+<li>Reinicie e instale o driver novo. Na NVIDIA, escolha “Instalação personalizada → Executar instalação limpa”.</li></ul></div></label></div>
+
+<div class="gpu">
+<div class="step nv"><h3>NVIDIA</h3>
+<p>Clique direito na área de trabalho → <b>Painel de Controle da NVIDIA → Gerenciar configurações 3D</b>:</p>
+<ul>
+<li>Modo de gerenciamento de energia: <b>Preferir desempenho máximo</b></li>
+<li>Baixa latência: <b>Ativado</b> (ou Ultra, em jogos competitivos)</li>
+<li>Qualidade da filtragem de textura: <b>Alto desempenho</b></li>
+<li>Taxa de atualização preferida: <b>Máxima disponível</b></li>
+<li>Sincronização vertical: <b>Desativado</b> (ou use G-SYNC se o monitor tiver)</li>
+<li>Cache de shaders: <b>Ilimitado</b> ou driver padrão</li>
+</ul>
+<div class="tip">Dica: a NVIDIA App também liga o DLSS e o Reflex por jogo.</div></div>
+
+<div class="step amd"><h3>AMD</h3>
+<p>Abra o <b>AMD Software: Adrenalin Edition → Jogos → Gráficos</b>:</p>
+<ul>
+<li>Perfil gráfico: <b>eSports</b> ou <b>Padrão</b></li>
+<li>Radeon Anti-Lag: <b>Ativado</b></li>
+<li>Radeon Chill: <b>Desativado</b> (limita FPS para economizar energia)</li>
+<li>Radeon Boost: ativar só se quiser mais FPS com perda de nitidez</li>
+<li>Qualidade da filtragem de textura: <b>Desempenho</b></li>
+<li>Aguardar atualização vertical: <b>Desativado</b></li>
+<li>FreeSync: <b>Ativado</b> se o monitor for compatível</li>
+</ul>
+<div class="tip">Dica: FSR e Fluid Motion Frames aumentam FPS nos jogos compatíveis.</div></div>
+</div>
+
+<div class="step" style="margin-top:12px"><label><input type="checkbox"><div><h3>Confirmar GPU dedicada em cada jogo</h3>
+<p>Em <b>Configurações → Sistema → Vídeo → Elementos gráficos</b>, adicione o .exe do jogo e escolha <b>Alto desempenho</b>. Isso evita que notebooks rodem o jogo na placa integrada.</p></div></label></div>
+</section>
+
+<section id="cores">
+<h2>4. Cores mais bonitas no monitor</h2>
+<p class="sub">Um bom ajuste faz o jogo ficar mais vivo sem estourar as cores.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ajustar no próprio monitor (OSD)</h3>
+<ul><li>Modo de imagem: <b>Padrão</b>, <b>sRGB</b> ou <b>FPS/Jogo</b></li>
+<li>Gamma: <b>2.2</b></li><li>Temperatura de cor: <b>6500K</b> ou “Normal”</li>
+<li>Contraste: perto de <b>50–75</b>; brilho conforme o ambiente</li>
+<li>Overdrive/Tempo de resposta: nível <b>médio</b> (alto demais cria rastro invertido)</li></ul></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Calibrar a cor no Windows</h3>
+<p>Aperte <code>Win + R</code>, digite o comando abaixo e siga o assistente de brilho, contraste e gama.</p>
+<div class="cmd"><code>dccw</code><button>Copiar</button></div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Saturação e vibrância na placa de vídeo</h3>
+<ul><li><b>NVIDIA:</b> Painel de Controle → Ajustar configurações de cor da área de trabalho → <b>Vibração digital</b> entre 55% e 70%.</li>
+<li><b>AMD:</b> Adrenalin → Configurações → Exibição → <b>Cor personalizada</b> → aumente a <b>Saturação</b> aos poucos (110–120%).</li></ul>
+<div class="tip">Se perder detalhe nas sombras ou nas cores fortes, volte um pouco.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Faixa dinâmica de saída: Completa</h3>
+<p>Na NVIDIA: <b>Alterar resolução → Faixa dinâmica de saída → Completa</b>. Isso evita cores lavadas e pretos acinzentados, principalmente em HDMI.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>HDR somente se o monitor for HDR de verdade</h3>
+<p>Em <b>Configurações → Sistema → Vídeo → HDR</b>. Monitores com selo DisplayHDR 600 ou superior valem a pena; HDR400 muitas vezes fica pior que o modo normal.</p></div></label></div>
+</section>
+
+<section id="hz">
+<h2>5. Hz do monitor e overclock</h2>
+<p class="sub">Mais Hz deixam o jogo muito mais fluido, mas só se o PC entregar FPS suficiente.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Colocar na taxa máxima do monitor</h3>
+<p>Vá em <b>Configurações → Sistema → Vídeo → Vídeo avançado → Escolher uma taxa de atualização</b> e selecione o maior valor (144 Hz, 165 Hz, 240 Hz...).</p>
+<div class="tip">Se a opção máxima não aparecer, troque o cabo. Use <b>DisplayPort</b> ou HDMI 2.0/2.1 (cabo de boa qualidade) e confira no OSD se a entrada está em modo “HDMI 2.0” / “Enhanced”.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ativar G-SYNC / FreeSync</h3>
+<p>Elimina rasgos de imagem sem adicionar tanta latência. Na NVIDIA: <b>Configurar G-SYNC</b>. Na AMD: <b>FreeSync</b> nas configurações de exibição. Limite o FPS 3 abaixo dos Hz máximos para melhor resultado.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Overclock do monitor (opcional)</h3>
+<ul>
+<li>Baixe o <b>CRU (Custom Resolution Utility)</b> ou use <b>Resolução personalizada</b> no painel da NVIDIA / Adrenalin da AMD.</li>
+<li>Crie uma resolução personalizada com a mesma resolução e uma taxa maior (por exemplo, 144 → 150 Hz).</li>
+<li>Aumente de <b>5 em 5 Hz</b>, aplique e reinicie o driver (no CRU, rode o <code>restart64.exe</code>).</li>
+<li>Selecione a nova taxa em Vídeo avançado e teste em <b>testufo.com</b>.</li>
+<li>Se aparecer tela preta, pontos, listras ou o monitor “pular” frames, volte ao valor anterior.</li>
+</ul>
+<div class="warn"><strong>Riscos:</strong> pode causar artefatos, piscar ou instabilidade e, em casos raros, danificar o painel. Faça por sua conta e risco; alguns fabricantes podem negar garantia. Muitos monitores só sobem 5 a 15 Hz.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Overclock leve da placa de vídeo (opcional)</h3>
+<ul>
+<li>Instale o <b>MSI Afterburner</b> e deixe o “Power Limit” e “Temp Limit” no máximo.</li>
+<li>Aumente o <b>Core Clock em +25 a +50 MHz</b> e teste com um jogo pesado ou o <b>3DMark / Unigine Heaven</b>.</li>
+<li>Depois aumente a <b>Memory Clock em +100 MHz</b> por vez.</li>
+<li>Se travar ou aparecerem artefatos coloridos, reduza o valor e salve o perfil quando estiver estável.</li>
+</ul>
+<div class="warn"><strong>Atenção:</strong> mantenha a GPU abaixo de 80 °C. Overclock aumenta consumo e calor; fonte fraca ou gabinete abafado causam desligamentos.</div></div></label></div>
+</section>
+
+<section id="hardware">
+<h2>6. CPU, memória RAM e BIOS</h2>
+<p class="sub">Aqui costuma estar o maior ganho "escondido": muito PC roda a RAM e a GPU abaixo do que poderia.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ativar XMP / EXPO da memória RAM</h3>
+<p>Por padrão a RAM roda na velocidade mais baixa (ex.: 2133 ou 4800 MHz). Entre na BIOS (tecla <code>Del</code> ou <code>F2</code> ao ligar) e ative o perfil <b>XMP</b> (Intel) ou <b>EXPO / DOCP</b> (AMD). Em Ryzen, isso melhora bastante o FPS.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Usar RAM em dual channel</h3>
+<p>Dois pentes iguais, nos slots indicados no manual da placa-mãe (geralmente A2 e B2). Um pente só pode custar de 10% a 30% de FPS. Para jogos atuais, o ideal é ter <b>16 GB</b> no mínimo, e 32 GB para jogos pesados.</p>
+<div class="tip">Confirme em <b>Gerenciador de Tarefas → Desempenho → Memória</b>: a velocidade e o número de slots usados aparecem ali.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ativar Resizable BAR (Smart Access Memory)</h3>
+<p>Na BIOS, ative <b>Above 4G Decoding</b> e <b>Re-Size BAR Support</b>. Funciona em placas NVIDIA RTX 30 ou mais novas e AMD RX 5000/6000 ou mais novas, e pode dar alguns por cento de FPS. Seu disco precisa estar em modo UEFI/GPT.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Atualizar a BIOS e o driver de chipset</h3>
+<p>Baixe no site do fabricante da placa-mãe. O driver de chipset da AMD é especialmente importante para o gerenciamento de energia dos Ryzen. Atualizar a BIOS tem um pequeno risco: siga o manual e não desligue o PC no meio.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Checar thermal throttling</h3>
+<p>Instale o <b>HWiNFO</b> e jogue por 20 minutos. Se a CPU ou GPU bater perto do limite (cerca de 90–95 °C na CPU), ela reduz o clock sozinha e você perde FPS. Solução: limpar poeira, melhorar o fluxo de ar, trocar a pasta térmica ou usar um cooler melhor.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Atenção ao gargalo (bottleneck)</h3>
+<p>Abra o MSI Afterburner com overlay durante o jogo. Se a <b>GPU está em 95–100%</b>, abaixe gráficos/resolução. Se a <b>GPU está baixa e uma thread da CPU está em 100%</b>, o limite é a CPU: baixar a resolução não vai ajudar, e sim reduzir distância de visão, multidões e física.</p></div></label></div>
+</section>
+
+<section id="jogos">
+<h2>7. Dentro dos jogos</h2>
+<p class="sub">As configurações do próprio jogo mudam muito mais o FPS do que qualquer ajuste de sistema.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Usar DLSS, FSR ou XeSS</h3>
+<p>Esses recursos renderizam em resolução menor e reconstroem a imagem. <b>Qualidade</b> quase não perde nitidez; <b>Equilibrado</b> ou <b>Desempenho</b> dão ainda mais FPS. Frame Generation aumenta o FPS mostrado, mas adiciona latência, então evite em jogos competitivos.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Baixar o que pesa de verdade</h3>
+<ul><li><b>Ray tracing:</b> desligado dá o maior ganho de FPS</li>
+<li><b>Sombras, nuvens/volumétricos, reflexos e oclusão ambiental:</b> baixo ou médio</li>
+<li><b>Antialiasing:</b> TAA ou FXAA; evite MSAA alto</li>
+<li><b>Distância de visão, vegetação e densidade de multidão:</b> médio</li>
+<li><b>Texturas:</b> deixe alto se sua VRAM aguentar (não pesam muito no FPS)</li>
+<li>Desligue <b>desfoque de movimento, profundidade de campo e granulação de filme</b></li></ul></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Tela cheia e V-Sync</h3>
+<p>Prefira <b>Tela cheia</b> (ou "sem bordas" se o jogo for mais estável assim). Desligue o V-Sync do jogo e use G-SYNC/FreeSync, ou limite o FPS. Em alguns jogos, testar <b>Propriedades do .exe → Compatibilidade → Desabilitar otimizações de tela cheia</b> reduz travadas; compare para ver se ajuda no seu caso.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Limitar o FPS de forma inteligente</h3>
+<p>Limitar alguns FPS abaixo dos Hz do monitor (ex.: 141 em 144 Hz) com o <b>RTSS</b> (que vem com o Afterburner) deixa o frametime mais estável e esfria o PC. Isso não aumenta o FPS máximo, mas melhora a sensação de fluidez.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desligar overlays desnecessários</h3>
+<p>Discord, Steam, GeForce Experience, Xbox Game Bar e gravadores consomem CPU/GPU. Desative os que você não usa. Feche também navegador com várias abas, Wallpaper Engine e programas de RGB durante o jogo.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Opções de inicialização (Steam)</h3>
+<p>Clique direito no jogo → <b>Propriedades → Opções de inicialização</b>. Exemplos úteis em jogos da Valve e em outros que aceitam: <code>-novid</code> (pula a intro) e <code>-high</code> (prioridade alta de CPU). Nem todo jogo reconhece esses comandos, então teste um por vez.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Medir o resultado</h3>
+<p>Use o overlay do <b>MSI Afterburner/RTSS</b> ou o <b>CapFrameX</b> para ver o FPS médio e o <b>1% low</b> (que mostra as travadas). Faça o mesmo teste antes e depois de cada mudança.</p></div></label></div>
+</section>
+
+<section id="avancado">
+<h2>8. Ajustes avançados do Windows</h2>
+<p class="sub">Ganhos menores ou que exigem escolha consciente. Faça um por vez.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desativar a Inicialização Rápida</h3>
+<p>Abra <code>powercfg.cpl</code> → <b>Escolher a função dos botões de energia → Alterar configurações indisponíveis</b> e desmarque <b>Ativar inicialização rápida</b>. Ela pode manter drivers em estado ruim e causar travadas; reiniciar de verdade deixa o sistema limpo.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desligar a hibernação (libera espaço)</h3>
+<p>No Terminal como administrador, rode o comando abaixo. Libera vários GB no SSD. Só faça se você não usa hibernar.</p>
+<div class="cmd"><code>powercfg -h off</code><button>Copiar</button></div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Integridade da memória (Isolamento de núcleo)</h3>
+<p>Em <b>Segurança do Windows → Segurança do dispositivo → Isolamento de núcleo</b>. Desligar pode dar alguns por cento de FPS em certos jogos, mas reduz a proteção contra malware e alguns jogos com anti-cheat exigem que esteja ligada. <b>Só desligue se entender o risco.</b></p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Desligar widgets, dicas e transparência</h3>
+<p>Em <b>Configurações → Personalização → Cores</b>, desligue "Efeitos de transparência". Em <b>Barra de tarefas</b>, desligue Widgets. Em <b>Sistema → Notificações</b>, desligue as dicas e sugestões. Cada um economiza um pouco de RAM e GPU.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Prioridade do jogo no Gerenciador de Tarefas</h3>
+<p>Com o jogo aberto, <b>Detalhes → clique direito no .exe → Definir prioridade → Alta</b>. Não use "Tempo real", que pode travar o sistema. O efeito é pequeno e vale só até fechar o jogo.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Memória virtual (arquivo de paginação)</h3>
+<p>Deixe como <b>Gerenciado pelo sistema</b>, de preferência no SSD. Desativar o arquivo de paginação não dá FPS e pode fazer jogos fecharem sozinhos.</p></div></label></div>
+
+<div class="warn"><strong>Evite:</strong> scripts "debloat" desconhecidos, desativar serviços do Windows no escuro e programas que prometem "dobrar o FPS". Podem quebrar o Windows, a Microsoft Store ou o anti-cheat.</div>
+</section>
+
+<section id="rede">
+<h2>9. Rede e latência</h2>
+<p class="sub">Para jogos online, ping baixo e estável importa tanto quanto FPS.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Usar cabo de rede</h3>
+<p>O cabo Ethernet tem menos oscilação que o Wi-Fi. Se precisar usar Wi-Fi, fique perto do roteador e use a rede de <b>5 GHz</b> ou Wi-Fi 6.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Trocar o DNS</h3>
+<p>Em <b>Configurações → Rede e Internet → Ethernet/Wi-Fi → Atribuição de servidor DNS → Editar</b>, use <code>1.1.1.1</code> e <code>1.0.0.1</code> (Cloudflare) ou <code>8.8.8.8</code> e <code>8.8.4.4</code> (Google). Depois limpe o cache:</p>
+<div class="cmd"><code>ipconfig /flushdns</code><button>Copiar</button></div>
+<div class="tip">O DNS ajuda a carregar páginas e launchers mais rápido, mas não muda o ping dentro da partida.</div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Parar downloads durante o jogo</h3>
+<p>Pause atualizações da Steam/Epic/Windows Update, streaming e backups na nuvem. Em <b>Steam → Configurações → Downloads</b>, ative "Permitir downloads durante o jogo" apenas se sua internet aguentar, e limite a velocidade se precisar.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Reiniciar o roteador e escolher o servidor certo</h3>
+<p>Reinicie o roteador de vez em quando e, nos jogos que permitem, escolha o servidor mais próximo do Brasil para reduzir o ping.</p></div></label></div>
+</section>
+
+<section id="manut">
+<h2>10. Armazenamento e manutenção física</h2>
+<p class="sub">Hardware limpo e bem ventilado mantém o desempenho do primeiro dia.</p>
+
+<div class="step"><label><input type="checkbox"><div><h3>Instalar jogos no SSD (de preferência NVMe)</h3>
+<p>Reduz o tempo de carregamento e as travadas por streaming de texturas. HD comum só serve para guardar jogos que você raramente joga.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Otimizar unidades</h3>
+<p>Abra <code>dfrgui</code>. No SSD, o Windows faz o <b>TRIM</b> automaticamente; confira se está agendado. No HD, a desfragmentação mensal ajuda. Nunca desfragmente SSD manualmente.</p>
+<div class="cmd"><code>dfrgui</code><button>Copiar</button></div></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Limpar a poeira a cada 3 a 6 meses</h3>
+<p>Desligue e desconecte o PC, sopre ventoinhas e filtros com ar comprimido (segurando a ventoinha para não girar demais) e limpe o dissipador. Poeira esquenta tudo e derruba o clock.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Melhorar o fluxo de ar e trocar a pasta térmica</h3>
+<p>Ventoinhas da frente puxando ar e as de trás/cima expulsando. Se o PC tem mais de 2–3 anos e esquenta muito, troque a pasta térmica da CPU (e da GPU, se souber fazer). Pode reduzir 5–15 °C.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Ajustar a curva das ventoinhas</h3>
+<p>Na BIOS (Q-Fan, Smart Fan) ou no MSI Afterburner, faça as ventoinhas subirem mais cedo quando a temperatura passa de 60 °C. Mais barulho, mas o clock se mantém alto por mais tempo.</p></div></label></div>
+
+<div class="step"><label><input type="checkbox"><div><h3>Undervolt (opcional, avançado)</h3>
+<p>Reduzir a tensão da GPU no MSI Afterburner (curva V/F) mantém o mesmo clock com menos calor e, muitas vezes, mais FPS sustentado. Faça em pequenos passos e teste a estabilidade, como no overclock.</p></div></label></div>
+</section>
+<section id='gpu2'><h2>11. Placa de vídeo: ajustes avançados</h2><p class='sub'>Opções extras além do básico. Aplique por jogo se preferir.</p>
+<div class='gpu'><div class='step nv'><h3>NVIDIA</h3><ul><li>Ative o <b>NVIDIA Reflex</b> (e Boost) dentro dos jogos compatíveis</li><li>Otimização de threads: <b>Automático</b></li><li>Buffer triplo: <b>Desativado</b></li><li>DSR (fatores): <b>Desativado</b> (renderiza em resolução maior e perde FPS)</li><li>Nitidez de imagem: <b>Ativada</b> a 0,5 junto com DLSS/escala</li><li>Verifique <b>Resizable BAR: Sim</b> em Informações do sistema</li><li>Defina o perfil por jogo (energia, baixa latência) em vez de só global</li></ul></div>
+<div class='step amd'><h3>AMD</h3><ul><li>Otimização do formato de superfície: <b>Ativada</b></li><li>Modo de tesselação: <b>Otimizado para AMD</b> ou limite em 8x/16x</li><li>Radeon Image Sharpening: <b>50–80%</b></li><li>Enhanced Sync: <b>Desativado</b> se usar FreeSync</li><li>Triple buffering OpenGL: <b>Desativado</b></li><li>Radeon Super Resolution (RSR/FSR): ative em jogos sem suporte nativo</li><li>Em <b>Ajuste</b>, teste undervolt e curva de ventoinha do Adrenalin</li></ul></div></div>
+<div class='step' style='margin-top:12px'><label><input type='checkbox'><div><h3>Limpar o cache de shaders após trocar o driver</h3><p>Pesquise «Limpeza de Disco», marque <b>Cache de sombreador DirectX</b> e limpe. O jogo recria o cache e reduz travadas causadas por cache antigo.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Instalar Visual C++ e DirectX</h3><p>Instale os pacotes <b>Microsoft Visual C++ Redistributable</b> (x86 e x64) e o <b>DirectX End-User Runtime</b> do site da Microsoft. Corrigem erros de DLL e alguns crashes.</p></div></label></div></section>
+
+<section id='perif'><h2>12. Periféricos e input lag</h2><p class='sub'>Reduz o atraso entre o seu movimento e o que aparece na tela.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Mouse: polling e DPI</h3><p>Use <b>1000 Hz</b> de polling (ou mais, se o mouse e a CPU aguentarem) e DPI entre <b>800 e 1600</b>, ajustando a sensibilidade no jogo. Ative <b>Raw Input</b> quando o jogo tiver.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Portas USB certas</h3><p>Ligue mouse e teclado nas portas <b>traseiras da placa-mãe</b>, sem hub. Desative as teclas de aderência (aperte Shift 5 vezes e desligue o atalho).</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Modo jogo do monitor</h3><p>No OSD, desligue <b>contraste dinâmico, nitidez extra, suavização de movimento e Eco</b>, que adicionam atraso. Ative o modo de baixa latência (Game/FPS) se existir.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Fone e controle sem fio</h3><p>Fones Bluetooth têm atraso. Em jogos competitivos, prefira fone com fio ou adaptador 2.4 GHz.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Input lag: ligar Reflex ou Anti-Lag</h3><p>Ative <b>NVIDIA Reflex</b> (Ativado + Boost) ou <b>AMD Anti-Lag</b> no jogo e no painel da placa. Reduz a fila de quadros entre CPU e GPU.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Input lag: V-Sync e limite de FPS</h3><p>Sem G-SYNC/FreeSync, deixe o V-Sync <b>desligado</b>. Com G-SYNC/FreeSync, ligue o V-Sync no painel da placa e limite o FPS 3 abaixo dos Hz (ex.: 141 em 144 Hz).</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Input lag: desligar Frame Generation</h3><p>DLSS/FSR Frame Generation e interpolação de movimento aumentam o FPS na tela, mas adicionam atraso. Em jogos competitivos, deixe desligado.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Input lag: tela cheia e Hz máximos</h3><p>Use tela cheia (ou sem bordas com as otimizações para jogos em janela ligadas) e a maior taxa de atualização do monitor. Mais Hz significa menos tempo entre quadros.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Input lag: TV e conexão</h3><p>Em TV, ative o <b>Modo Jogo</b> (ALLM) e desligue todos os efeitos de imagem. Prefira DisplayPort ou HDMI 2.1 e mouse com fio ou 2.4 GHz.</p></div></label></div></section>
+
+<section id='win2'><h2>13. Windows: ajustes extras</h2><p class='sub'>Pequenos ganhos e mais estabilidade.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Reparar arquivos do sistema</h3><p>No Terminal como administrador, rode os dois comandos em ordem. Corrigem arquivos corrompidos que causam travadas e erros.</p><div class='cmd'><code>sfc /scannow</code><button>Copiar</button></div><div class='cmd'><code>DISM /Online /Cleanup-Image /RestoreHealth</code><button>Copiar</button></div></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desligar a Otimização de Entrega</h3><p><b>Configurações → Windows Update → Opções avançadas → Otimização de Entrega</b> e desative. O PC deixa de enviar atualizações para outros computadores usando sua internet.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Reduzir telemetria e sugestões</h3><p>Em <b>Privacidade e segurança → Diagnóstico e comentários</b>, desligue o envio de dados opcionais e as experiências personalizadas.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desativar a indexação (somente em HD)</h3><p>Se seus jogos estão em um HD comum, desligue a indexação de pesquisa nele (propriedades do disco). Em SSD não é necessário.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Excluir a pasta de jogos do antivírus</h3><p>Em <b>Segurança do Windows → Proteção contra vírus → Exclusões</b>, adicione a pasta dos jogos para diminuir leituras e engasgos. Só faça com jogos de fontes confiáveis.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Remover programas do fabricante e bloatware</h3><p>Desinstale trial de antivírus, utilitários de notebook que você não usa e apps duplicados em <b>Aplicativos instalados</b>.</p></div></label></div></section>
+
+<section id='ocpu'><h2>14. Overclock de CPU e RAM</h2><p class='sub'>Para quem quer extrair mais. Exige teste de estabilidade.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Ryzen: PBO e Curve Optimizer</h3><p>Na BIOS, ative <b>Precision Boost Overdrive</b> e use o <b>Curve Optimizer</b> com valor negativo (comece em −10 em todos os núcleos). Menos calor e clock sustentado mais alto.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Intel: limites de potência</h3><p>Mantenha o <b>Turbo Boost</b> ativo e confira <b>PL1/PL2</b> na BIOS: valores muito baixos limitam o clock. Em CPUs com K, é possível subir o multiplicador aos poucos.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Ajustar frequência e timings da RAM</h3><p>Depois do XMP/EXPO, é possível subir a frequência ou apertar timings. Use o <b>DRAM Calculator</b> (Ryzen) como referência e mude um valor por vez.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Testar a estabilidade</h3><p>Rode <b>OCCT</b> ou <b>Cinebench</b> para CPU, <b>MemTest86</b> ou TestMem5 para RAM e jogue por horas. Qualquer erro, crash ou tela azul significa que o ajuste deve voltar um passo.</p></div></label></div>
+<div class='warn'><strong>Riscos:</strong> aumenta calor e consumo, pode corromper arquivos se ficar instável e pode afetar a garantia. Tenha cooler e fonte à altura.</div></section>
+
+<section id='perfis'><h2>15. Perfis rápidos por tipo de jogo</h2><p class='sub'>Pontos de partida para cada cenário.</p>
+<div class='tools'><div class='step'><h3>Competitivo</h3><p>CS2, Valorant, Fortnite, LoL.</p><ul><li>Resolução nativa, gráficos baixos</li><li>Textura média/alta, sombras baixas</li><li>FPS acima dos Hz do monitor</li><li>V-Sync desligado, Reflex/Anti-Lag ligado</li></ul></div>
+<div class='step'><h3>Gráficos pesados</h3><p>Cyberpunk, Alan Wake, Elden Ring.</p><ul><li>DLSS/FSR em Qualidade</li><li>Alvo de 60 a 100 FPS</li><li>G-SYNC/FreeSync ligado</li><li>Ray tracing desligado ou baixo</li></ul></div>
+<div class='step'><h3>PC fraco ou notebook</h3><p>GPU integrada ou entrada.</p><ul><li>Resolução 720p/900p com FSR</li><li>Texturas e sombras baixas</li><li>Limite de 30 a 60 FPS</li><li>Na tomada e com base de resfriamento</li></ul></div></div></section>
+
+<section id='probl'><h2>16. Solução de problemas</h2><p class='sub'>O que fazer quando o FPS não está como esperado.</p>
+<div class='tools'><div class='step'><h3>Travadas (stutter)</h3><ul><li>Jogo no SSD</li><li>Limpe o cache de shaders</li><li>Reinstale o driver com DDU</li><li>Confira temperatura e RAM em dual channel</li></ul></div>
+<div class='step'><h3>FPS cai com o tempo</h3><ul><li>Verifique thermal throttling</li><li>Feche navegador e overlays</li><li>Reinicie o PC antes de jogar</li><li>Cheque vazamento de memória no Gerenciador de Tarefas</li></ul></div>
+<div class='step'><h3>Crash ou tela azul</h3><ul><li>Volte overclock e XMP ao padrão</li><li>Rode <code>sfc /scannow</code></li><li>Teste a RAM com MemTest86</li><li>Verifique a fonte e as temperaturas</li></ul></div>
+<div class='step'><h3>Input lag</h3><ul><li>Desligue V-Sync</li><li>Taxa de atualização no máximo</li><li>Ative Reflex ou Anti-Lag</li><li>Modo jogo no monitor e cabo DisplayPort</li></ul></div>
+<div class='step'><h3>FPS baixo com PC bom</h3><ul><li>Confirme que o jogo usa a GPU dedicada</li><li>Modo de energia em Melhor desempenho</li><li>Veja temperatura e throttling no HWiNFO</li><li>Verifique XMP/EXPO e gargalo de CPU</li></ul></div>
+<div class='step'><h3>Jogo não abre ou fecha sozinho</h3><ul><li>Verifique a integridade dos arquivos no launcher</li><li>Instale Visual C++ e DirectX</li><li>Feche overlays e programas de RGB</li><li>Atualize o driver e libere o jogo no antivírus</li></ul></div></div></section>
+
+<section id='tools'><h2>17. Ferramentas recomendadas</h2><p class='sub'>Use somente os sites e programas oficiais.</p>
+<div class='tools'><div class='step'><h3>DDU</h3><p>Remove drivers de vídeo por completo antes de reinstalar.</p></div><div class='step'><h3>MSI Afterburner + RTSS</h3><p>Overclock, undervolt, overlay de FPS e limitador.</p></div><div class='step'><h3>HWiNFO</h3><p>Temperaturas, clocks e consumo de todos os componentes.</p></div><div class='step'><h3>CapFrameX</h3><p>Mede FPS médio, 1% low e frametime.</p></div><div class='step'><h3>CRU</h3><p>Resoluções e taxas personalizadas para overclock de monitor.</p></div><div class='step'><h3>TestUFO</h3><p>Site para testar Hz, ghosting e fluidez do monitor.</p></div><div class='step'><h3>OCCT / Cinebench</h3><p>Testes de estabilidade e desempenho da CPU.</p></div><div class='step'><h3>MemTest86</h3><p>Verifica erros na memória RAM após XMP ou overclock.</p></div></div></section>
+<section id='erros'><h2>18. Erros que custam FPS</h2><p class='sub'>Falhas comuns que passam despercebidas e derrubam o desempenho.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Monitor ligado na placa-mãe</h3><p>O cabo do monitor deve ir na <b>saída da placa de vídeo</b> (parte de baixo/traseira do gabinete), nunca na da placa-mãe. Se estiver errado, o jogo roda no vídeo integrado e o FPS despenca.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Placa de vídeo em modo PCIe reduzido</h3><p>Abra o <b>GPU-Z</b> e veja <b>Bus Interface</b>. O esperado é PCIe x16 (ou x8 em algumas placas). Se mostrar x4, reencaixe a placa no slot principal. Clique no «?» para testar sob carga.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Cabos de energia da GPU</h3><p>Em placas potentes, use <b>um cabo PCIe para cada conector</b> da fonte, bem encaixado, e uma fonte com a potência recomendada. Fonte fraca causa quedas de clock e desligamentos.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Driver de vídeo genérico</h3><p>No <b>Gerenciador de Dispositivos → Adaptadores de vídeo</b>, se aparecer «Adaptador básico da Microsoft», o driver real não está instalado.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Dois antivírus ou excesso de programas de segurança</h3><p>Mantenha apenas um (o Windows Defender já é suficiente). Dois ao mesmo tempo brigam por CPU e disco.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Navegador rodando em segundo plano</h3><p>No Chrome/Edge, desligue <b>Continuar executando aplicativos em segundo plano</b> nas configurações do sistema. Evite vídeo tocando no segundo monitor durante o jogo.</p></div></label></div></section>
+
+<section id='w11'><h2>19. Windows 11 para jogos</h2><p class='sub'>Recursos que ajudam (ou atrapalham) no Windows 11.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Otimizações para jogos em janela</h3><p><b>Configurações → Sistema → Vídeo → Elementos gráficos → Alterar configurações gráficas padrão</b> e ligue as otimizações para jogos em janela. Melhora latência e liga a taxa variável em jogos sem borda.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Auto HDR e HDR</h3><p>Em <b>Vídeo → HDR</b>, desligue o Auto HDR se o seu monitor não for HDR real. Ele pode lavar as cores e custar alguns FPS.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desligar animações</h3><p><b>Acessibilidade → Efeitos visuais</b> e desative efeitos de animação e de transparência. A interface fica mais rápida.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Escala em 100% e assistente de foco</h3><p>Escala de tela acima de 100% pode causar bugs em alguns jogos. Ligue o <b>Assistente de foco</b> para não receber notificações no meio da partida.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Melhorias de áudio</h3><p>No painel de som, nas propriedades do dispositivo, desligue <b>Aprimoramentos de áudio</b> e o som espacial se não usar. Frequência de 48000 Hz costuma ser a mais compatível.</p></div></label></div></section>
+
+<section id='note'><h2>20. Notebook gamer</h2><p class='sub'>Notebooks têm limites térmicos e de energia. Aqui estão os ajustes certos.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Forçar a GPU dedicada</h3><p>No software do fabricante (Armoury Crate, Legion Zone, Nitro Sense, MSI Center), escolha o modo <b>GPU dedicada / Ultimate</b> se existir MUX switch. Em seguida, defina o .exe do jogo como Alto desempenho.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Modo Turbo e carregador original</h3><p>Use o perfil <b>Turbo/Performance</b> com o <b>carregador original</b>. Carregador fraco limita a potência e derruba o FPS.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Refrigeração</h3><p>Eleve a traseira, use base com ventoinhas e nunca deixe sobre cama ou sofá. Limpe as saídas de ar e considere trocar a pasta térmica após 2–3 anos.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Limite de carga da bateria</h3><p>Se o software permitir, limite a carga a <b>80%</b> para jogar plugado sempre. Preserva a saúde da bateria.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Undervolt da CPU e da GPU</h3><p>Reduz calor e mantém clocks altos. Na GPU, use o curve editor do Afterburner. Na CPU, ferramentas como ThrottleStop ou Intel XTU funcionam só se o fabricante não tiver bloqueado.</p></div></label></div></section>
+
+<section id='stream'><h2>21. Streaming e gravação sem perder FPS</h2><p class='sub'>Para quem grava ou transmite enquanto joga.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Usar o encoder da GPU</h3><p>No OBS, em <b>Saída → Codificador</b>, escolha <b>NVENC</b> (NVIDIA), <b>AMF</b> (AMD) ou <b>QuickSync</b> (Intel) em vez de x264. Quase não pesa no jogo.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Captura de jogo e bitrate</h3><p>Use <b>Captura de jogo</b> em vez de captura de tela. Para 1080p60, comece com 6000–8000 kbps ao transmitir. Para gravar, use um bitrate maior ou CQP/CRF entre 18 e 22.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Gravar em outro disco</h3><p>Se possível, grave em um SSD diferente do disco do jogo para evitar quedas de FPS e travadas.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Reduzir a carga durante a live</h3><p>Limite o FPS do jogo, feche navegadores pesados e evite filtros de vídeo e cenas com muitas fontes ao mesmo tempo.</p></div></label></div></section>
+<section id='cal'><h2>22. Calibração de cores do monitor</h2><p class='sub'>Do básico ao avançado, para ter cores bonitas, naturais e sem perder detalhe.</p>
+<div class='legend'><span class='bd hi'>Impacto alto</span><span class='bd md'>Impacto médio</span><span class='bd lo'>Risco baixo</span><span class='bd rk'>Requer cuidado</span></div>
+<div class='step'><label><input type='checkbox'><div><h3>Resetar e escolher o modo certo</h3><p><span class='bd hi'>Impacto alto</span><span class='bd lo'>Risco baixo</span><br>Volte o monitor ao padrão de fábrica (Reset no menu) e escolha o modo <b>Padrão</b> ou <b>sRGB</b>. Desligue <b>Vivid, Dinâmico, Eco e Contraste dinâmico</b>: estouram as cores e escondem detalhes.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Ajustar o brilho ao ambiente</h3><p><span class='bd hi'>Impacto alto</span><br>Procure algo perto de <b>100 a 150 cd/m²</b> (na maioria dos monitores, 30–60%). Brilho alto demais lava as cores e cansa a vista; baixo demais esconde as sombras. Aumente só se a sala for muito clara.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Contraste sem estourar o branco</h3><p><span class='bd md'>Impacto médio</span><br>Normalmente entre <b>70% e 80%</b>. Pesquise <b>Lagom LCD test</b> e abra as páginas de contraste e nível de branco: todos os tons claros devem ser distintos. Se os mais claros somem, reduza o contraste.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Gama em 2.2</h3><p><span class='bd hi'>Impacto alto</span><br>Use <b>2.2</b> (padrão sRGB). Gama 2.4 deixa a imagem mais escura e contrastada, boa em quarto escuro. Gama baixa demais deixa tudo lavado. Confira na página de gama do teste Lagom.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Temperatura de cor: 6500K</h3><p><span class='bd md'>Impacto médio</span><br>Use <b>6500K</b> (ou «Normal/sRGB»). Se o branco ficar amarelado ou azulado, ajuste o ganho RGB do monitor em pequenos passos de 1 a 3 pontos, sem mexer em um canal só demais.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Vibração digital / Saturação na placa</h3><p><span class='bd hi'>Impacto alto</span><br><b>NVIDIA:</b> Painel → <b>Ajustar configurações de cor da área de trabalho</b> → Usar configurações NVIDIA → Vibração digital entre <b>55% e 70%</b> (50% é o padrão). <b>AMD:</b> Adrenalin → Configurações → Exibição → Cor personalizada → Saturação em <b>105–120%</b>. Não exagere, ou as cores perdem detalhe.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Formato de pixel e faixa completa</h3><p><span class='bd hi'>Impacto alto</span><br>Use <b>RGB, faixa dinâmica Completa</b>. NVIDIA: Alterar resolução → Usar configurações de cor NVIDIA. AMD: Exibição → Formato de pixel <b>RGB 4:4:4 Full RGB</b>. Evite YCbCr 4:2:0, que borra o texto e desbota as cores.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Profundidade de cor: 8 ou 10 bits</h3><p><span class='bd md'>Impacto médio</span><br>Use <b>10 bpc</b> apenas se o monitor for 10 bits nativo e com HDR; do contrário, 8 bits já está certo (gradientes continuam suaves com dithering).</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Instalar o perfil de cor (ICC)</h3><p><span class='bd md'>Impacto médio</span><br>Baixe o driver do monitor no site do fabricante (traz o perfil .icm). Abra <code>colorcpl</code>, aba Dispositivos, escolha o monitor, marque <b>Usar minhas configurações</b>, adicione o perfil e defina como padrão. O <b>RTINGS</b> publica ajustes calibrados para muitos monitores.</p><div class='cmd'><code>colorcpl</code><button>Copiar</button></div></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Monitor wide gamut: controlar a saturação</h3><p><span class='bd hi'>Impacto alto</span><br>Telas wide gamut (DCI-P3) deixam conteúdo sRGB exageradamente saturado. Use o modo <b>sRGB</b> do monitor ou, no Windows 11, ative o <b>Gerenciamento automático de cores</b> em Configurações → Sistema → Vídeo.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Calibrar com colorimétro</h3><p><span class='bd hi'>Impacto alto</span><span class='bd rk'>Requer equipamento</span><br>Com um colorimétro (Calibrite Display, Datacolor Spyder) e o software dele ou o <b>DisplayCAL</b>, você gera um perfil exato de gama, branco e preto. Deixe o monitor ligado por 30 minutos antes e refaça a cada 3 a 6 meses.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>HDR: só se for HDR de verdade</h3><p><span class='bd md'>Impacto médio</span><br>Ligue em Configurações → Sistema → Vídeo → HDR, instale o app <b>Calibração de HDR do Windows</b> (Microsoft Store) e ajuste o brilho do conteúdo SDR. Em monitores sem dimming local, o HDR costuma ficar pior que o SDR.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desligar Luz noturna ao calibrar e jogar</h3><p><span class='bd md'>Impacto médio</span><br>A Luz noturna e filtros de luz azul esquentam a imagem e mudam o branco. Use só à noite, por conforto.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Iluminação do ambiente</h3><p><span class='bd md'>Impacto médio</span><br>Evite reflexo e sol direto na tela. Uma luz de fundo (bias lighting) de 6500K atrás do monitor reduz a fadiga e melhora o contraste percebido.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Filtros dentro do jogo</h3><p><span class='bd md'>Impacto médio</span><span class='bd rk'>Anti-cheat</span><br>Os filtros do overlay NVIDIA (<code>Alt+F3</code>) ajustam brilho, contraste e saturação por jogo. O ReShade dá mais controle, mas alguns anti-cheat bloqueiam: não use em jogos competitivos online.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Cuidados com o tipo de painel</h3><p><span class='bd lo'>Risco baixo</span><br><b>IPS:</b> não aumente o brilho para ver o preto (glow). <b>VA:</b> ajuste o overdrive para evitar rastro. <b>OLED:</b> ative a proteção contra burn-in e evite imagens estáticas por horas.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Conferir o resultado</h3><p><span class='bd lo'>Risco baixo</span><br>Compare pele, céu e vegetação em fotos que você conhece. Se tudo parece neon, reduza a saturação; se parece sem vida, suba a vibração um pouco.</p></div></label></div></section>
+
+<section id='calpre'><h2>23. Presets de cor para começar</h2><p class='sub'>Valores iniciais por tipo de uso. Ajuste conforme o seu monitor.</p>
+<div class='tools'><div class='step'><h3>Jogos competitivos</h3><ul><li>Modo FPS/Padrão</li><li>Gama 2.2</li><li>Contraste 75%</li><li>Vibração NVIDIA 65% / Saturação AMD 115%</li><li>Temperatura 6500K</li></ul></div>
+<div class='step'><h3>AAA e cinema</h3><ul><li>Modo sRGB ou Cinema</li><li>Gama 2.2 (2.4 em sala escura)</li><li>Vibração 55–60%</li><li>HDR só em painel HDR real</li><li>Bias lighting ligado</li></ul></div>
+<div class='step'><h3>Cores fiéis (edição)</h3><ul><li>Modo sRGB</li><li>Gama 2.2 e 6500K</li><li>100–120 cd/m²</li><li>Sem vibração extra na placa</li><li>Perfil ICC calibrado</li></ul></div></div></section>
+
+<section id='extra'><h2>24. Extras de desempenho</h2><p class='sub'>Mais ajustes para quem quer extrair até o último FPS.</p>
+<div class='step'><label><input type='checkbox'><div><h3>Verificar malware e mineradores</h3><p><span class='bd hi'>Impacto alto</span><br>Em Segurança do Windows → Proteção contra vírus, rode a <b>Verificação offline</b>. Malware e criptomineração escondidos são causa comum de FPS baixo sem motivo aparente.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>PCI Express sem economia de energia</h3><p><span class='bd md'>Impacto médio</span><br>Em <code>powercfg.cpl</code> → Alterar configurações do plano → Avançadas → <b>PCI Express → Gerenciamento de energia de estado de link → Desativado</b>. Evita quedas de clock da GPU.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Estado mínimo do processador em 100%</h3><p><span class='bd md'>Impacto médio</span><span class='bd rk'>Mais calor</span><br>Nas mesmas opções avançadas, em <b>Gerenciamento de energia do processador</b>, coloque o estado mínimo e máximo em 100%. Mantem os clocks altos; monitore a temperatura e evite em notebook.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Placa de rede sem economia de energia</h3><p><span class='bd md'>Impacto médio</span><br>Gerenciador de Dispositivos → Adaptadores de rede → Propriedades → Gerenciamento de energia: desmarque <b>Permitir que o computador desligue este dispositivo</b>. Em Avançado, desative <b>Ethernet com eficiência energética</b>. No Wi‑Fi, deixe o modo em Desempenho máximo.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Shader Pre-Caching da Steam</h3><p><span class='bd md'>Impacto médio</span><br>Em Steam → Configurações → Shader Pre-Caching, ative o pré-cache e o processamento em segundo plano. Reduz travadas nos primeiros minutos de jogo.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Deixar o jogo compilar os shaders</h3><p><span class='bd md'>Impacto médio</span><br>Na primeira abertura, não pule a tela «compilando shaders». Pular causa travadas durante a partida.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desligar overlays e aceleração desnecessária</h3><p><span class='bd md'>Impacto médio</span><br>Desative o overlay NVIDIA (<code>Alt+Z</code>), o overlay da AMD (<code>Alt+R</code>) e, no Discord, a <b>Aceleração de hardware</b> em Avançado se notar queda de FPS.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Programas de RGB e monitoramento</h3><p><span class='bd lo'>Impacto baixo</span><br>iCUE, Armoury Crate, Razer Synapse e similares consomem CPU e RAM. Feche durante o jogo ou use o perfil leve.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Pausar OneDrive e backups</h3><p><span class='bd md'>Impacto médio</span><br>Clique no ícone do OneDrive → Pausar sincronização por 2, 8 ou 24 horas antes de jogar.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Atualizar firmware e drivers secundários</h3><p><span class='bd md'>Impacto médio</span><br>SSD (software do fabricante), Wi‑Fi, Ethernet, áudio e BIOS. Baixe sempre do site do fabricante.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Medir antes e depois</h3><p><span class='bd lo'>Risco baixo</span><br>Rode <b>3DMark</b>, <b>Unigine</b> ou <b>Cinebench</b> e anote os resultados. Assim você sabe quais ajustes realmente funcionaram.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>Desligar o PC de verdade e manter o ambiente fresco</h3><p><span class='bd md'>Impacto médio</span><br>Reinicie ou desligue por completo pelo menos uma vez por semana. Um ambiente mais fresco ou com ar-condicionado ajuda CPU e GPU a manterem clocks altos.</p></div></label></div>
+<div class='step'><label><input type='checkbox'><div><h3>DLSS/FSR em vez de baixar a resolução do Windows</h3><p><span class='bd hi'>Impacto alto</span><br>Para ganhar FPS, use escala inteligente do jogo, que mantém a nitidez. Mudar a resolução do desktop deixa a imagem borrada e não é necessário.</p></div></label></div>
+<div class='warn'><strong>Evite:</strong> limpadores de registro, «boosters» de PC e programas que prometem dobrar o FPS. Não ajudam e podem corromper o Windows.</div></section>
+</main>
+<footer><p><b>KR-PRO</b>, criado por <b>KRCADU</b>.</p>Ordem de impacto na maioria dos PCs: XMP/EXPO e dual channel, configurações do jogo e DLSS/FSR, temperatura, SSD, drivers e energia, e só depois os ajustes finos. Mude uma coisa por vez e meça o FPS antes e depois.</footer>
+
+<script>
+(function(){
+var boxes=[].slice.call(document.querySelectorAll('.step input[type=checkbox]'));
+var bar=document.getElementById('bar'),pl=document.getElementById('pl');
+var KEY='pcgamer-progress',saved=[];
+try{saved=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
+boxes.forEach(function(b,i){b.checked=saved.indexOf(i)>-1;b.addEventListener('change',upd)});
+function upd(){
+var done=[];boxes.forEach(function(b,i){if(b.checked)done.push(i)});
+bar.style.width=(boxes.length?done.length/boxes.length*100:0)+'%';
+var pc=boxes.length?done.length/boxes.length:0;pl.textContent=done.length+' de '+boxes.length+' etapas concluídas';var rk=document.getElementById('rk');if(rk)rk.textContent=pc>=1?'Lendário':pc>=.7?'Elite':pc>=.4?'Pro':pc>=.15?'Veterano':'Iniciante';
+try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}
+}
+upd();
+document.querySelectorAll('.cmd button').forEach(function(btn){
+btn.addEventListener('click',function(e){
+e.preventDefault();e.stopPropagation();
+var t=btn.parentNode.querySelector('code').textContent;
+function ok(){btn.textContent='Copiado!';setTimeout(function(){btn.textContent='Copiar'},1500)}
+try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}
+function fb(){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(y){}document.body.removeChild(a)}
+});
+});
+})();
+</script>
+<script>
+(function(){
+var T=[['Windows',['windows','win2','w11']],['Energia',['energia']],['Drivers e GPU',['drivers','gpu2']],['Cores e Hz',['cores','hz']],['CPU, RAM e BIOS',['hardware','ocpu','erros']],['Dentro dos jogos',['jogos','perfis']],['Periféricos e input lag',['perif']],['Rede',['rede']],['Avançado',['avancado']],['Notebook',['note']],['Streaming',['stream']],['Manutenção',['manut']],['Problemas',['probl']],['Ferramentas',['tools']],['Calibração de cores',['cal','calpre'],`<path d='M12 3s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11z'/>`,'#ffb020',7],['Extras de desempenho',['extra'],`<path d='M4 17a8 8 0 1116 0'/><path d='M12 17l4-6'/>`,'#ff8a00',17]];
+document.documentElement.classList.add('js');
+var IC=[`<rect x='3' y='3' width='8' height='8' rx='1'/><rect x='13' y='3' width='8' height='8' rx='1'/><rect x='3' y='13' width='8' height='8' rx='1'/><rect x='13' y='13' width='8' height='8' rx='1'/>`,`<path d='M13 2L4 14h7l-1 8 9-12h-7z'/>`,`<rect x='3' y='7' width='18' height='10' rx='2'/><circle cx='9' cy='12' r='2.5'/><path d='M15 10h3M15 14h3M6 17v3M10 17v3'/>`,`<rect x='2' y='4' width='20' height='13' rx='2'/><path d='M8 21h8M12 17v4'/>`,`<rect x='6' y='6' width='12' height='12' rx='2'/><rect x='9.5' y='9.5' width='5' height='5'/><path d='M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4'/>`,`<rect x='2' y='7' width='20' height='11' rx='5'/><path d='M7 10v5M4.5 12.5h5'/><circle cx='16' cy='11' r='1'/><circle cx='18.5' cy='14' r='1'/>`,`<rect x='6' y='3' width='12' height='18' rx='6'/><path d='M12 3v6'/>`,`<path d='M2 9a15 15 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0'/><circle cx='12' cy='19.5' r='1'/>`,`<path d='M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12'/><circle cx='16' cy='6' r='2'/><circle cx='10' cy='12' r='2'/><circle cx='18' cy='18' r='2'/>`,`<rect x='4' y='5' width='16' height='11' rx='1.5'/><path d='M2 20h20'/>`,`<circle cx='12' cy='12' r='3'/><path d='M7 7a7 7 0 000 10M17 7a7 7 0 010 10M4 4a11 11 0 000 16M20 4a11 11 0 010 16'/>`,`<path d='M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z'/>`,`<path d='M12 3l10 18H2z'/><path d='M12 10v5M12 18h.01'/>`,`<rect x='3' y='8' width='18' height='12' rx='2'/><path d='M9 8V5h6v3M3 13h18'/>`,`<circle cx='12' cy='12' r='8'/><path d='M12 1v6M12 17v6M1 12h6M17 12h6'/>`,`<path d='M5 19L19 5M15 5h4v4M7 14l3 3M4 20l2-2'/>`,`<path d='M7 4h10v5a5 5 0 01-10 0zM7 6H3v2a3 3 0 004 3M17 6h4v2a3 3 0 01-4 3M12 14v4M8 21h8'/>`,`<rect x='3' y='3' width='18' height='18' rx='4'/><circle cx='8' cy='8' r='1'/><circle cx='16' cy='16' r='1'/><circle cx='12' cy='12' r='1'/><circle cx='16' cy='8' r='1'/><circle cx='8' cy='16' r='1'/>`,`<path d='M4 14v-2a8 8 0 0116 0v2'/><rect x='3' y='14' width='4' height='6' rx='2'/><rect x='17' y='14' width='4' height='6' rx='2'/>`,`<path d='M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'/>`,`<circle cx='12' cy='12' r='9'/><circle cx='12' cy='12' r='2'/><path d='M3 12h7M14 12h7M12 14v7'/>`,`<circle cx='12' cy='6' r='3'/><path d='M12 9v6M5 21v-3a2 2 0 012-2h10a2 2 0 012 2v3z'/>`];
+var COL=['#ff7a1a','#ffb020','#ff5a1f','#ff9a3c','#ff6a3d','#ffa41b','#ff8a00','#ffc247','#ff6b1a','#ff9440','#ff7043','#ffb347','#ff4d2e','#ffa733'];
+var TH=[[0,11,8,5],[1,16,20,5],[2,14,15,5],[3,16,17,5],[4,1,19,2],[5,14,15,17,21],[6,18,21,5],[7,18,5,14],[8,4,1,19],[9,20,5,1],[10,18,3,5],[11,19,8,0],[12,19,14,8],[13,8,4,11]];
+var PS=[[30,40,-12,1.9],[210,30,0,1.6],[320,110,10,1.8],[120,130,8,1.7],[250,190,-15,1.7],[20,230,6,1.8],[150,270,0,1.6],[320,290,-8,1.8],[60,335,0,1.5],[225,325,10,1.6]];
+var bgEl=document.querySelector('.bgart');
+function bg(i){bgEl.classList.add('sw');setTimeout(function(){var th=TH[i],h='';PS.forEach(function(p,k){h+=`<g transform='translate(${p[0]} ${p[1]}) rotate(${p[2]}) scale(${p[3]})' style='stroke:${k%3==2?'var(--tx)':'var(--ac)'}'>${IC[th[k%th.length]]}</g>`});document.querySelector('#gp g').innerHTML=h;document.getElementById('gp').setAttribute('patternTransform','rotate('+(i*7%40-20)+') scale('+(0.9+(i%4)*0.12)+')');bgEl.classList.remove('sw')},180)}
+var nav=document.querySelector('nav div');nav.innerHTML='';nav.setAttribute('role','tablist');
+var tabs=T.map(function(t,i){var b=document.createElement('button');b.className='tab';b.setAttribute('role','tab');b.innerHTML=`<span class='ic'><svg viewBox='0 0 24 24' width='18' height='18' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>${t[2]||IC[i]}</svg></span><span class='lb'>${t[0]}</span><small></small>`;b.style.setProperty('--tc',t[3]||COL[i]);b.style.order=t[4]!=null?t[4]:i*2;b.onclick=function(){show(i)};nav.appendChild(b);return b});
+function cnt(){T.forEach(function(t,i){var d=0,n=0;t[1].forEach(function(id){var s=document.getElementById(id);if(!s)return;var c=s.querySelectorAll('input[type=checkbox]');n+=c.length;[].forEach.call(c,function(x){if(x.checked)d++})});var sm=tabs[i].lastChild;sm.textContent=d+'/'+n;sm.style.display=n?'':'none'})}
+function show(i){
+[].forEach.call(document.querySelectorAll('main section'),function(s){s.classList.remove('on')});
+T[i][1].forEach(function(id){var s=document.getElementById(id);if(s)s.classList.add('on')});
+tabs.forEach(function(b,k){b.setAttribute('aria-selected',k===i)});document.documentElement.style.setProperty('--ac',T[i][3]||COL[i]);
+tabs[i].scrollIntoView({inline:'center',block:'nearest'});
+var h=document.querySelector('header').offsetHeight;if(window.scrollY>h)window.scrollTo(0,h);
+}
+document.addEventListener('change',cnt);cnt();var s1=document.getElementById('st1');if(s1)s1.textContent=document.querySelectorAll('main input[type=checkbox]').length+' otimizações';
+var hs=location.hash.slice(1),st=0;T.forEach(function(t,i){if(t[1].indexOf(hs)>-1)st=i});
+show(st);
+})();
+</script>
+</body>
+</html>
